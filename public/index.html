@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSOOOK-style PDP Generator</title>
+  <link rel="stylesheet" href="./css/tool.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="panel">
+      <div class="panel-head">
+        <h1>PDP Generator</h1>
+        <p>상품 정보를 입력하면 SSOOOK 상세페이지풍 레이아웃 HTML이 생성됩니다. 미리보기 · 복사 · 다운로드 지원.</p>
+      </div>
+
+      <div class="toolbar">
+        <button type="button" class="primary" id="btn-render">미리보기</button>
+        <button type="button" class="ok" id="btn-copy">HTML 복사</button>
+        <button type="button" id="btn-download">다운로드</button>
+        <button type="button" id="btn-open">새 탭</button>
+        <button type="button" id="btn-sample">샘플 채우기</button>
+      </div>
+
+      <form class="form-scroll" id="pdp-form" autocomplete="off">
+        <div class="hint-box">
+          <strong>섹션 작성법</strong><br>
+          상세 섹션은 <code>## 제목</code>으로 나누고, 이미지는 <code>!(https://...)</code> 한 줄로 추가하세요.<br>
+          FAQ는 <code>Q:</code> / <code>A:</code> 형식, 컬러는 <code>이름:#hex</code>, 이미지·사이즈는 줄바꿈으로 구분합니다.
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label>브랜드 <span>좌측 세로 로고</span></label>
+            <input name="brand" placeholder="SSOOOK">
+          </div>
+          <div class="field">
+            <label>후기 수</label>
+            <input name="reviewCount" placeholder="0">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>상품명</label>
+          <input name="name" placeholder="[사전주문] 상품명 [CODE]">
+        </div>
+        <div class="field">
+          <label>상품 요약</label>
+          <input name="summary" placeholder="한 줄 요약">
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label>소비자가</label>
+            <input name="originPrice" placeholder="₩239,900">
+          </div>
+          <div class="field">
+            <label>판매가 / 상태</label>
+            <input name="salePrice" placeholder="₩199,000 또는 SOLD OUT">
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label>배송 범위</label>
+            <input name="shippingScope" placeholder="국내배송">
+          </div>
+          <div class="field">
+            <label>배송방법</label>
+            <input name="shippingMethod" placeholder="택배">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>배송비</label>
+          <input name="shippingFee" placeholder="₩3,000 (₩50,000 이상 무료)">
+        </div>
+
+        <div class="field">
+          <label>이미지 URL <span>줄바꿈으로 여러 장</span></label>
+          <textarea name="images" class="tall" placeholder="https://..."></textarea>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label>컬러 옵션 <span>이름:#hex</span></label>
+            <textarea name="colors" placeholder="BEIGE:#e8d9c8"></textarea>
+          </div>
+          <div class="field">
+            <label>사이즈 옵션</label>
+            <textarea name="sizes" placeholder="S&#10;M&#10;L"></textarea>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>상세 히어로 타이틀</label>
+          <input name="displayTitle" placeholder="보아 침낭백">
+        </div>
+        <div class="field">
+          <label>상세 히어로 카피</label>
+          <textarea name="displayTagline" placeholder="두 줄 카피"></textarea>
+        </div>
+
+        <div class="field">
+          <label>배송 공지 (DELIVERY NOTICE)</label>
+          <textarea name="notice"></textarea>
+        </div>
+
+        <div class="field">
+          <label>앵커 칩 <span>줄바꿈</span></label>
+          <textarea name="anchors" placeholder="포인트&#10;소재&#10;FAQ"></textarea>
+        </div>
+
+        <div class="field">
+          <label>선택 이유 <span>제목|설명</span></label>
+          <textarea name="features" class="tall"></textarea>
+        </div>
+
+        <div class="field">
+          <label>에디토리얼 섹션 <span>## 제목 + 본문 + !(url)</span></label>
+          <textarea name="sections" class="tall"></textarea>
+        </div>
+
+        <div class="field">
+          <label>FAQ <span>Q: / A:</span></label>
+          <textarea name="faq" class="tall"></textarea>
+        </div>
+
+        <div class="field">
+          <label>하단 고지</label>
+          <textarea name="legal"></textarea>
+        </div>
+
+        <div class="field">
+          <label>생성된 HTML <span>복사용</span></label>
+          <textarea id="code-out" readonly class="tall" style="font-family: ui-monospace, monospace; font-size: 11px;"></textarea>
+        </div>
+      </form>
+    </aside>
+
+    <section class="preview-wrap">
+      <div class="preview-bar">
+        <strong>Live Preview</strong>
+        <span class="status" id="status">준비</span>
+      </div>
+      <iframe id="preview" title="PDP Preview" sandbox="allow-scripts allow-same-origin"></iframe>
+    </section>
+  </div>
+
+  <script src="./js/template.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>
