@@ -3,36 +3,60 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SSOOOK-style PDP Generator</title>
+  <title>HEVITZ-style PDP Generator</title>
   <link rel="stylesheet" href="./css/tool.css">
 </head>
 <body>
   <div class="app">
     <aside class="panel">
       <div class="panel-head">
-        <h1>PDP Generator</h1>
-        <p>상품 정보를 입력하면 SSOOOK 상세페이지풍 레이아웃 HTML이 생성됩니다. 미리보기 · 복사 · 다운로드 지원.</p>
+        <h1>HEVITZ-style PDP</h1>
+        <p>
+          감성적 여백·센터 정렬 상세를 <strong>반복 블록</strong>으로 구성합니다.
+          엑셀/CSV → 미리보기 → 카페24 상세 HTML 조각 복사.
+        </p>
       </div>
 
       <div class="toolbar">
         <button type="button" class="primary" id="btn-render">미리보기</button>
-        <button type="button" class="ok" id="btn-copy">HTML 복사</button>
+        <button type="button" class="ok" id="btn-copy-fragment">카페24 조각 복사</button>
+        <button type="button" id="btn-copy">전체 HTML</button>
         <button type="button" id="btn-download">다운로드</button>
         <button type="button" id="btn-open">새 탭</button>
-        <button type="button" id="btn-sample">샘플 채우기</button>
+        <button type="button" id="btn-sample">샘플</button>
       </div>
 
       <form class="form-scroll" id="pdp-form" autocomplete="off">
         <div class="hint-box">
-          <strong>섹션 작성법</strong><br>
-          상세 섹션은 <code>## 제목</code>으로 나누고, 이미지는 <code>!(https://...)</code> 한 줄로 추가하세요.<br>
-          FAQ는 <code>Q:</code> / <code>A:</code> 형식, 컬러는 <code>이름:#hex</code>, 이미지·사이즈는 줄바꿈으로 구분합니다.
+          <strong>블록 DSL</strong> — <code>@intro</code> <code>@image</code> <code>@heading</code>
+          <code>@text</code> <code>@colors</code> <code>@specs</code> <code>@quote</code> <code>@notice</code><br>
+          제목/본문 구분은 <code>---</code> 한 줄. 스펙은 <code>라벨|값</code>, 컬러는 <code>이름:#hex</code>.
         </div>
+
+        <fieldset class="csv-box">
+          <legend>CSV 대량 로드</legend>
+          <div class="field">
+            <label>products.csv</label>
+            <input type="file" id="csv-products" accept=".csv,text/csv">
+          </div>
+          <div class="field">
+            <label>blocks.csv <span>선택</span></label>
+            <input type="file" id="csv-blocks" accept=".csv,text/csv">
+          </div>
+          <div class="toolbar" style="padding:0;border:0">
+            <button type="button" class="primary" id="btn-csv-load">CSV 불러오기</button>
+            <button type="button" id="btn-load-csv-row" disabled>선택 상품 적용</button>
+          </div>
+          <div class="field" style="margin-top:10px">
+            <label>로드된 상품</label>
+            <select id="csv-product-select" disabled></select>
+          </div>
+        </fieldset>
 
         <div class="grid-2">
           <div class="field">
-            <label>브랜드 <span>좌측 세로 로고</span></label>
-            <input name="brand" placeholder="SSOOOK">
+            <label>SKU</label>
+            <input name="sku" placeholder="HZ-101-M">
           </div>
           <div class="field">
             <label>후기 수</label>
@@ -41,106 +65,70 @@
         </div>
 
         <div class="field">
-          <label>상품명</label>
-          <input name="name" placeholder="[사전주문] 상품명 [CODE]">
+          <label>상품명 (KO)</label>
+          <input name="name" placeholder="101 시그니처 사첼백 M">
         </div>
         <div class="field">
-          <label>상품 요약</label>
-          <input name="summary" placeholder="한 줄 요약">
+          <label>상품명 (EN)</label>
+          <input name="nameEn" placeholder="Signature Satchel M">
         </div>
 
         <div class="grid-2">
           <div class="field">
-            <label>소비자가</label>
-            <input name="originPrice" placeholder="₩239,900">
+            <label>판매가</label>
+            <input name="price" placeholder="KRW 290,000">
           </div>
           <div class="field">
-            <label>판매가 / 상태</label>
-            <input name="salePrice" placeholder="₩199,000 또는 SOLD OUT">
-          </div>
-        </div>
-
-        <div class="grid-2">
-          <div class="field">
-            <label>배송 범위</label>
-            <input name="shippingScope" placeholder="국내배송">
-          </div>
-          <div class="field">
-            <label>배송방법</label>
-            <input name="shippingMethod" placeholder="택배">
+            <label>제작정보</label>
+            <input name="leadTime" placeholder="28일 (주말·공휴일 제외)">
           </div>
         </div>
 
         <div class="field">
-          <label>배송비</label>
-          <input name="shippingFee" placeholder="₩3,000 (₩50,000 이상 무료)">
+          <label>제품정보</label>
+          <textarea name="productInfo"></textarea>
+        </div>
+        <div class="field">
+          <label>주의사항</label>
+          <textarea name="caution"></textarea>
         </div>
 
         <div class="field">
-          <label>이미지 URL <span>줄바꿈으로 여러 장</span></label>
+          <label>갤러리 이미지 URL <span>줄바꿈</span></label>
           <textarea name="images" class="tall" placeholder="https://..."></textarea>
         </div>
 
         <div class="grid-2">
           <div class="field">
             <label>컬러 옵션 <span>이름:#hex</span></label>
-            <textarea name="colors" placeholder="BEIGE:#e8d9c8"></textarea>
+            <textarea name="colors" placeholder="모카:#5c4033"></textarea>
           </div>
           <div class="field">
-            <label>사이즈 옵션</label>
-            <textarea name="sizes" placeholder="S&#10;M&#10;L"></textarea>
+            <label>사이즈/옵션</label>
+            <textarea name="sizes" placeholder="M&#10;L"></textarea>
           </div>
         </div>
 
         <div class="field">
-          <label>상세 히어로 타이틀</label>
-          <input name="displayTitle" placeholder="보아 침낭백">
-        </div>
-        <div class="field">
-          <label>상세 히어로 카피</label>
-          <textarea name="displayTagline" placeholder="두 줄 카피"></textarea>
+          <label>상세 블록 DSL <span>엑셀·AI 주입 영역</span></label>
+          <textarea name="blocksDsl" class="tall" style="min-height:280px"></textarea>
         </div>
 
         <div class="field">
-          <label>배송 공지 (DELIVERY NOTICE)</label>
-          <textarea name="notice"></textarea>
+          <label>카페24용 HTML 조각 <span>상세설명에 붙여넣기</span></label>
+          <textarea id="fragment-out" readonly class="tall" style="font-family:ui-monospace,monospace;font-size:11px"></textarea>
         </div>
 
         <div class="field">
-          <label>앵커 칩 <span>줄바꿈</span></label>
-          <textarea name="anchors" placeholder="포인트&#10;소재&#10;FAQ"></textarea>
-        </div>
-
-        <div class="field">
-          <label>선택 이유 <span>제목|설명</span></label>
-          <textarea name="features" class="tall"></textarea>
-        </div>
-
-        <div class="field">
-          <label>에디토리얼 섹션 <span>## 제목 + 본문 + !(url)</span></label>
-          <textarea name="sections" class="tall"></textarea>
-        </div>
-
-        <div class="field">
-          <label>FAQ <span>Q: / A:</span></label>
-          <textarea name="faq" class="tall"></textarea>
-        </div>
-
-        <div class="field">
-          <label>하단 고지</label>
-          <textarea name="legal"></textarea>
-        </div>
-
-        <div class="field">
-          <label>생성된 HTML <span>복사용</span></label>
-          <textarea id="code-out" readonly class="tall" style="font-family: ui-monospace, monospace; font-size: 11px;"></textarea>
+          <label>전체 미리보기 HTML</label>
+          <textarea id="code-out" readonly class="tall" style="font-family:ui-monospace,monospace;font-size:11px"></textarea>
         </div>
       </form>
     </aside>
 
     <section class="preview-wrap">
       <div class="preview-bar">
-        <strong>Live Preview</strong>
+        <strong>Live Preview · localhost:3456</strong>
         <span class="status" id="status">준비</span>
       </div>
       <iframe id="preview" title="PDP Preview" sandbox="allow-scripts allow-same-origin"></iframe>

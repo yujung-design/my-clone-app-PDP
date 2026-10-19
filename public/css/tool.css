@@ -84,6 +84,35 @@ html, body {
 }
 .hint-box code { color: #c9e9ff; }
 
+.csv-box {
+  border: 1px solid var(--tool-line);
+  border-radius: 10px;
+  padding: 12px 12px 4px;
+  margin-bottom: 16px;
+  background: #12151c;
+}
+.csv-box legend {
+  padding: 0 6px;
+  color: var(--tool-accent);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.field select {
+  width: 100%;
+  border: 1px solid var(--tool-line);
+  background: #10131a;
+  color: var(--tool-text);
+  border-radius: 8px;
+  padding: 10px 11px;
+  font: inherit;
+}
+.field input[type="file"] {
+  padding: 8px;
+  font-size: 11px;
+}
+.panel-head strong { color: var(--tool-accent); font-weight: 600; }
+
 .preview-wrap {
   display: flex; flex-direction: column; min-width: 0; min-height: 0;
 }

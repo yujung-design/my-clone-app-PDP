@@ -1,0 +1,16 @@
+<!--
+  Cafe24 스킨 product/detail.html 의 #prdDetail 영역에
+  생성기 출력(fragment)을 {$product_detail} 대신/함께 쓰는 패턴 참고용.
+
+  실제 운영:
+  1) 어드민 상품 상세설명에 output/*-cafe24-fragment.html 붙여넣기
+  2) 또는 스킨에서 아래처럼 감싸기
+-->
+<div module="product_additional">
+  <div id="prdDetail">
+    <div class="cont">
+      <!-- 생성 HTML 조각이 여기 렌더됩니다 -->
+      <center>{$product_detail}</center>
+    </div>
+  </div>
+</div>

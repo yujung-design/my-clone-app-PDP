@@ -1,11 +1,13 @@
 {
-  "name": "ssoook-style-pdp-generator",
-  "version": "1.0.0",
-  "description": "SSOOOK-style product detail page generator (local web tool)",
+  "name": "hevitz-style-pdp-generator",
+  "version": "2.0.0",
+  "description": "HEVITZ-style Cafe24 product detail page generator (modular blocks + CSV/AI)",
   "private": true,
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "generate": "node scripts/generate_pdp.js",
+    "generate:py": "python scripts/generate_pdp.py"
   },
   "engines": {
     "node": ">=16"

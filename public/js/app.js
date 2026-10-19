@@ -4,28 +4,21 @@
   const preview = $("#preview");
   const statusEl = $("#status");
   const codeOut = $("#code-out");
+  const fragmentOut = $("#fragment-out");
 
   const FIELDS = [
-    "brand",
+    "sku",
     "name",
-    "summary",
-    "displayTitle",
-    "displayTagline",
-    "originPrice",
-    "salePrice",
-    "shippingScope",
-    "shippingMethod",
-    "shippingFee",
+    "nameEn",
+    "price",
+    "leadTime",
+    "productInfo",
+    "caution",
     "reviewCount",
     "images",
     "colors",
     "sizes",
-    "notice",
-    "anchors",
-    "features",
-    "sections",
-    "faq",
-    "legal",
+    "blocksDsl",
   ];
 
   function readData() {
@@ -46,41 +39,39 @@
   }
 
   function render() {
-    const html = window.PDPTemplate.build(readData());
+    const data = readData();
+    const html = window.PDPTemplate.build(data);
+    const fragment = window.PDPTemplate.buildCafe24Fragment(data);
     preview.srcdoc = html;
     if (codeOut) codeOut.value = html;
+    if (fragmentOut) fragmentOut.value = fragment;
     statusEl.textContent = "미리보기 갱신됨";
     statusEl.classList.remove("copied");
-    return html;
+    return { html, fragment };
   }
 
-  async function copyHtml() {
-    const html = render();
+  async function copyText(text, label) {
     try {
-      await navigator.clipboard.writeText(html);
-      statusEl.textContent = "HTML 복사 완료";
+      await navigator.clipboard.writeText(text);
+      statusEl.textContent = label;
       statusEl.classList.add("copied");
     } catch {
-      codeOut?.select();
-      document.execCommand("copy");
-      statusEl.textContent = "HTML 복사 완료 (fallback)";
-      statusEl.classList.add("copied");
+      statusEl.textContent = "복사 실패 — 텍스트 영역을 직접 선택하세요";
     }
   }
 
-  function downloadHtml() {
-    const html = render();
-    const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+  function download(filename, text) {
+    const blob = new Blob([text], { type: "text/html;charset=utf-8" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = "product-detail.html";
+    a.download = filename;
     a.click();
     URL.revokeObjectURL(a.href);
-    statusEl.textContent = "product-detail.html 다운로드";
+    statusEl.textContent = `${filename} 다운로드`;
   }
 
   function openPreview() {
-    const html = render();
+    const { html } = render();
     const w = window.open("", "_blank");
     if (w) {
       w.document.open();
@@ -89,57 +80,179 @@
     }
   }
 
+  /** CSV: products.csv columns + blocks.csv joined by sku */
+  function parseCsv(text) {
+    const rows = [];
+    let row = [];
+    let cell = "";
+    let inQuotes = false;
+    const src = String(text).replace(/^\uFEFF/, "");
+    for (let i = 0; i < src.length; i++) {
+      const ch = src[i];
+      const next = src[i + 1];
+      if (inQuotes) {
+        if (ch === '"' && next === '"') {
+          cell += '"';
+          i++;
+        } else if (ch === '"') {
+          inQuotes = false;
+        } else {
+          cell += ch;
+        }
+      } else if (ch === '"') {
+        inQuotes = true;
+      } else if (ch === ",") {
+        row.push(cell);
+        cell = "";
+      } else if (ch === "\n") {
+        row.push(cell);
+        rows.push(row);
+        row = [];
+        cell = "";
+      } else if (ch === "\r") {
+        /* skip */
+      } else {
+        cell += ch;
+      }
+    }
+    if (cell.length || row.length) {
+      row.push(cell);
+      rows.push(row);
+    }
+    if (!rows.length) return [];
+    const headers = rows[0].map((h) => h.trim());
+    return rows.slice(1).filter((r) => r.some((c) => c.trim())).map((r) => {
+      const obj = {};
+      headers.forEach((h, i) => {
+        obj[h] = (r[i] ?? "").trim();
+      });
+      return obj;
+    });
+  }
+
+  function productFromCsvRow(row, blockRows) {
+    const sku = row.sku || row.SKU || "";
+    const mine = (blockRows || []).filter((b) => (b.sku || b.SKU) === sku);
+    mine.sort((a, b) => Number(a.sort || 0) - Number(b.sort || 0));
+    const blocks = mine.map((b) => {
+      const type = (b.block_type || b.type || "text").toLowerCase();
+      const items = (b.items || "").split("|").map((s) => s.trim()).filter(Boolean);
+      return {
+        type,
+        title: b.title || "",
+        body: b.body || "",
+        image_url: b.image_url || b.image || "",
+        caption: b.caption || "",
+        items,
+      };
+    });
+    return {
+      sku,
+      name: row.name || "",
+      nameEn: row.name_en || row.nameEn || "",
+      price: row.price || "",
+      leadTime: row.lead_time || row.leadTime || "",
+      productInfo: (row.product_info || row.productInfo || "").replace(/\\n/g, "\n"),
+      caution: (row.caution || "").replace(/\\n/g, "\n"),
+      reviewCount: row.review_count || row.reviewCount || "0",
+      images: (row.images || "").split("|").map((s) => s.trim()).filter(Boolean).join("\n"),
+      colors: (row.colors || "").split("|").join("\n"),
+      sizes: (row.sizes || "").split("|").join("\n"),
+      blocksDsl: window.PDPTemplate.blocksToDsl(blocks),
+    };
+  }
+
+  let csvProducts = [];
+  let csvBlocks = [];
+
+  function loadCsvFiles(productFile, blockFile) {
+    return Promise.all([
+      productFile.text().then(parseCsv),
+      blockFile ? blockFile.text().then(parseCsv) : Promise.resolve([]),
+    ]).then(([products, blocks]) => {
+      csvProducts = products;
+      csvBlocks = blocks;
+      const select = $("#csv-product-select");
+      select.innerHTML = products
+        .map((p, i) => `<option value="${i}">${p.sku || i} — ${p.name || "(no name)"}</option>`)
+        .join("");
+      select.disabled = !products.length;
+      $("#btn-load-csv-row").disabled = !products.length;
+      statusEl.textContent = `CSV ${products.length}개 상품 / 블록 ${blocks.length}행 로드`;
+      if (products.length) {
+        writeData(productFromCsvRow(products[0], blocks));
+        render();
+      }
+    });
+  }
+
   const SAMPLE = {
-    brand: "SSOOOK",
-    name: "[사전주문] 프리미엄 보아 침낭백 [DEMO-001]",
-    summary: "집에서는 편안한 쿠션, 외출 시에는 포근한 침낭백",
-    displayTitle: "보아 침낭백",
-    displayTagline: "집에서는 편안한 쿠션.\n외출 시에는 포근한 침낭.",
-    originPrice: "₩239,900",
-    salePrice: "SOLD OUT",
-    shippingScope: "국내배송",
-    shippingMethod: "택배",
-    shippingFee: "₩3,000 (₩50,000 이상 구매 시 무료)",
-    reviewCount: "0",
+    sku: "HZ-101-M",
+    name: "101 시그니처 사첼백 M",
+    nameEn: "Signature Satchel M",
+    price: "KRW 290,000",
+    leadTime: "28일 (주말 및 공휴일 제외)",
+    productInfo:
+      "이탈리안 베지터블 통가죽\nvegetable tanned full grain leather\n- 태블릿 수납 가능한 A4 사이즈\n- 20mm 통가죽 스트랩·숄더패드 기본 제공",
+    caution:
+      "작은 스크래치, 주름, 점은 천연 가죽의 자연적 특징입니다.\n소재 특성상 이염 및 물 빠짐이 있을 수 있습니다.",
+    reviewCount: "40",
     images: [
-      "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=1000&q=80",
-      "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=1000&q=80",
-      "https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?w=1000&q=80",
+      "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=1000&q=80",
+      "https://images.unsplash.com/photo-1590874103328-eac38a68373b?w=1000&q=80",
+      "https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?w=1000&q=80",
     ].join("\n"),
-    colors: "15 BEIGE:#e8d9c8\n503 PINK:#f0c9d0\n999 BLACK:#222222",
-    sizes: "S\nM\nL",
-    notice:
-      "구매 전 아래 배송정보를 확인해주세요!\n\n프리오더 기간: 재고 소진 시까지\n배송일정: 순차 배송\n※ 프리오더 상품은 일반배송과 합배송이 불가합니다.",
-    anchors: "포인트\n디테일\n소재\n세탁방법\n구성품\n사이즈 가이드\n자주 묻는 질문",
-    features: [
-      "유모차 라이너와 침낭을 하나로 | 집에서는 쿠션, 외출에서는 침낭으로 유연하게 사용해요.",
-      "포근한 보아 솔루션 | 내부에는 부드러운 보아 원단을 매치해 포근함을 유지해요.",
-      "복원력 좋은 충전재 | 풍부한 볼륨으로 편안하게 쉴 수 있어요.",
-      "분리 세탁 가능 | 내부 쿠션만 따로 세탁해 위생적으로 관리해요.",
-    ].join("\n"),
-    sections: `## 밖에서는
-포근한 침낭으로.
-유모차에 넣어 이동할 때에도 아늑한 공간을 만들어줘요.
-!(https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=1200&q=80)
+    colors: "레디쉬브라운:#8b4513\n모카브라운:#5c4033\n빈티지블랙:#222222",
+    sizes: "M\nL",
+    blocksDsl: `@intro
+손으로 쓰는 시간,
+가죽에 남는 이야기.
+---
+매일의 쓰임이 쌓일수록
+표면의 색과 결이 깊어집니다.
 
-## 가까이 볼수록,
-아이를 생각한 설계.
-탄력 있는 테두리, 논슬립 어깨패드, 사이드 포켓과 D링까지.
-핵심 디테일을 담았어요.
-!(https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=1200&q=80)
+@image
+https://images.unsplash.com/photo-1590874103328-eac38a68373b?w=1200&q=80
+---
+Signature Satchel — studio still
 
-## 가볍지만 따뜻하게.
-프리미엄 충전재로 가볍지만 뛰어난 보온성과 복원력을 줘요.`,
-    faq: `Q: 우리 아이에게 맞는 사이즈는 어떻게 고르나요?
-A: 몸무게를 기준으로 S는 3kg까지, M은 5kg까지, L은 7kg까지 권장해요. 모량이 많거나 체형이 길면 한 사이즈 업을 추천해요.
+@heading
+Detail
 
-Q: 집에서도 쓸 수 있나요?
-A: 네. 실내에서는 오픈형 쿠션으로, 외출 시에는 침낭으로 사용할 수 있어요.
+@text
+안감 없이 통가죽만으로 이어 만든 사첼.
+불필요한 장식을 덜어내고,
+손바느질과 구조에 집중했습니다.
 
-Q: 오염되면 어떻게 관리하나요?
-A: 오염 시 바로 부분 세탁을 권장해요. 내부 쿠션은 분리해 따로 세탁할 수 있어요.`,
-    legal:
-      "본 페이지는 SSOOOK 상세페이지의 레이아웃/타이포 스타일을 참고한 교육용 템플릿입니다.\n원본 쇼핑몰의 이미지·카피·상표는 해당 권리자에게 있습니다.",
+@image
+https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?w=1200&q=80
+
+@heading
+Color
+
+@colors
+01. 레디쉬 브라운:#8b4513
+02. 모카 브라운:#5c4033
+03. 빈티지 블랙:#222222
+
+@heading
+Size Info
+
+@specs
+가방 크기|29 × 24 × 9 cm
+수납 공간|28 × 21 × 8 cm
+후면 포켓|21 × 11 cm
+스트랩|104 × 2 cm
+무게|850–870 g
+
+@quote
+에이징 전 / 에이징 후 —
+같은 가방, 다른 깊이의 색.
+
+@notice
+측정 방법·위치에 따라 약간의 오차가 생길 수 있습니다.
+각인 옵션 선택 시 제작 중 취소·반품·교환이 불가합니다.
+천연 가죽의 스크래치와 주름은 불량이 아닙니다.`,
   };
 
   form.addEventListener("input", () => {
@@ -151,10 +264,33 @@ A: 오염 시 바로 부분 세탁을 권장해요. 내부 쿠션은 분리해 �
     writeData(SAMPLE);
     render();
   });
-  $("#btn-copy").addEventListener("click", copyHtml);
-  $("#btn-download").addEventListener("click", downloadHtml);
+  $("#btn-copy").addEventListener("click", () => copyText(render().html, "전체 HTML 복사 완료"));
+  $("#btn-copy-fragment").addEventListener("click", () =>
+    copyText(render().fragment, "카페24 상세 HTML 조각 복사 완료")
+  );
+  $("#btn-download").addEventListener("click", () => {
+    const data = readData();
+    download(`${data.sku || "product"}-detail.html`, render().html);
+  });
   $("#btn-open").addEventListener("click", openPreview);
   $("#btn-render").addEventListener("click", render);
+
+  $("#btn-csv-load").addEventListener("click", () => {
+    const p = $("#csv-products").files[0];
+    const b = $("#csv-blocks").files[0];
+    if (!p) {
+      statusEl.textContent = "products.csv 파일을 선택하세요";
+      return;
+    }
+    loadCsvFiles(p, b);
+  });
+
+  $("#btn-load-csv-row").addEventListener("click", () => {
+    const i = Number($("#csv-product-select").value);
+    if (!csvProducts[i]) return;
+    writeData(productFromCsvRow(csvProducts[i], csvBlocks));
+    render();
+  });
 
   writeData(SAMPLE);
   render();

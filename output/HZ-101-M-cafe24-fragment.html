@@ -1,0 +1,214 @@
+<!-- HEVITZ-style modular detail | product: HZ-101-M -->
+<div class="hz-detail hz-cafe24">
+
+        <section class="hz-block hz-intro" data-block="0">
+          <h2 class="hz-intro-title">손으로 쓰는 시간,<br>가죽에 남는 이야기.</h2>
+          <p class="hz-intro-body">매일의 쓰임이 쌓일수록<br>표면의 색과 결이 깊어집니다.</p>
+        </section>
+
+        <figure class="hz-block hz-figure" data-block="1">
+          <img src="https://images.unsplash.com/photo-1590874103328-eac38a68373b?w=1200&amp;q=80" alt="Signature Satchel — studio still" loading="lazy">
+          <figcaption>Signature Satchel — studio still</figcaption>
+        </figure>
+
+        <header class="hz-block hz-heading" data-block="2">
+          <h3>Detail</h3>
+          <span class="hz-rule" aria-hidden="true"></span>
+          
+        </header>
+
+        <section class="hz-block hz-text" data-block="3">
+          <p>안감 없이 통가죽만으로 이어 만든 사첼.<br>불필요한 장식을 덜어내고,<br>손바느질과 구조에 집중했습니다.</p>
+        </section>
+
+        <figure class="hz-block hz-figure" data-block="4">
+          <img src="https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?w=1200&amp;q=80" alt="" loading="lazy">
+          
+        </figure>
+
+        <header class="hz-block hz-heading" data-block="5">
+          <h3>Color</h3>
+          <span class="hz-rule" aria-hidden="true"></span>
+          
+        </header>
+
+        <section class="hz-block" data-block="6">
+          <ul class="hz-colors"><li><span class="hz-swatch" style="background:#8b4513"></span><span>01. 레디쉬 브라운</span></li><li><span class="hz-swatch" style="background:#5c4033"></span><span>02. 모카 브라운</span></li><li><span class="hz-swatch" style="background:#222222"></span><span>03. 빈티지 블랙</span></li></ul>
+        </section>
+
+        <header class="hz-block hz-heading" data-block="7">
+          <h3>Size Info</h3>
+          <span class="hz-rule" aria-hidden="true"></span>
+          
+        </header>
+
+        <section class="hz-block" data-block="8">
+          <dl class="hz-specs"><div class="hz-spec-row"><dt>가방 크기</dt><dd>29 × 24 × 9 cm</dd></div><div class="hz-spec-row"><dt>수납 공간</dt><dd>28 × 21 × 8 cm</dd></div><div class="hz-spec-row"><dt>스트랩</dt><dd>104 × 2 cm</dd></div><div class="hz-spec-row"><dt>무게</dt><dd>850–870 g</dd></div></dl>
+        </section>
+
+        <section class="hz-block hz-quote" data-block="9">
+          <p>에이징 전 / 에이징 후 —<br>같은 가방, 다른 깊이의 색.</p>
+        </section>
+
+        <aside class="hz-block hz-notice" data-block="10">
+          <p>측정 오차가 있을 수 있습니다.<br>각인 옵션 선택 시 제작 중 취소·반품·교환이 불가합니다.</p>
+        </aside>
+</div>
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Noto+Sans+KR:wght@300;400;500;600&display=swap');
+
+:root {
+  --hz-bg: #faf9f7;
+  --hz-paper: #ffffff;
+  --hz-ink: #1a1814;
+  --hz-muted: #6e675c;
+  --hz-line: #ddd8d0;
+  --hz-soft: #f0ebe3;
+  --hz-accent: #3d3429;
+  --hz-content: 820px;
+  --hz-display: "Cormorant Garamond", "Noto Serif KR", serif;
+  --hz-body: "Noto Sans KR", sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  background: var(--hz-bg); color: var(--hz-ink);
+  font-family: var(--hz-body); font-size: 14px; font-weight: 300;
+  line-height: 1.75; -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; vertical-align: top; }
+a { color: inherit; }
+
+.hz-page { min-height: 100vh; }
+
+/* —— Buy module (Cafe24-like top) —— */
+.hz-buy {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 56px;
+  padding: 64px 32px 48px; background: var(--hz-paper);
+}
+.hz-gallery-main {
+  aspect-ratio: 1 / 1; background: var(--hz-soft); overflow: hidden;
+}
+.hz-gallery-main img { width: 100%; height: 100%; object-fit: cover; }
+.hz-thumbs { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.hz-thumb {
+  width: 60px; height: 60px; padding: 0; border: 1px solid transparent;
+  background: var(--hz-soft); overflow: hidden; cursor: pointer;
+}
+.hz-thumb.is-active { border-color: var(--hz-ink); }
+.hz-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+.hz-info { padding-top: 8px; }
+.hz-name {
+  margin: 0 0 6px; font-family: var(--hz-display);
+  font-size: 28px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.25;
+}
+.hz-name-en {
+  margin: 0 0 28px; color: var(--hz-muted); font-size: 13px; letter-spacing: 0.04em;
+}
+.hz-table { width: 100%; border-collapse: collapse; margin-bottom: 28px; }
+.hz-table th, .hz-table td {
+  border-bottom: 1px solid var(--hz-line); padding: 12px 0;
+  text-align: left; vertical-align: top; font-weight: 400; font-size: 13px;
+}
+.hz-table th {
+  width: 96px; color: var(--hz-muted); font-weight: 500; padding-right: 16px;
+}
+.hz-price { font-weight: 500; font-size: 15px; }
+.hz-opt { margin: 18px 0; }
+.hz-opt-label { font-size: 12px; font-weight: 500; margin-bottom: 10px; letter-spacing: 0.06em; }
+.hz-opt-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.hz-chip {
+  min-width: 36px; height: 36px; padding: 0 10px;
+  border: 1px solid var(--hz-line); background: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 12px; color: var(--hz-muted);
+}
+.hz-cta { display: grid; gap: 8px; margin-top: 28px; }
+.hz-cta button {
+  height: 48px; border: 1px solid var(--hz-ink);
+  font-family: var(--hz-body); font-size: 12px; font-weight: 500;
+  letter-spacing: 0.14em; cursor: pointer;
+}
+.hz-cta .buy { background: var(--hz-ink); color: #fff; }
+.hz-cta .cart, .hz-cta .wish { background: #fff; color: var(--hz-ink); }
+
+/* —— Editorial detail (inject into Cafe24 {$product_detail}) —— */
+.hz-detail {
+  max-width: var(--hz-content); margin: 0 auto;
+  padding: 72px 24px 120px; text-align: center;
+}
+.hz-block { margin: 0 0 72px; }
+.hz-intro-title {
+  margin: 0 0 20px; font-family: var(--hz-display);
+  font-size: clamp(26px, 4vw, 36px); font-weight: 500; line-height: 1.35;
+}
+.hz-intro-body, .hz-text p, .hz-quote p {
+  margin: 0 auto; max-width: 520px; color: #3a342c; font-size: 14px; line-height: 1.95;
+}
+.hz-figure { margin: 0 auto 72px; }
+.hz-figure img { width: 100%; margin: 0 auto; }
+.hz-figure figcaption {
+  margin-top: 14px; color: var(--hz-muted); font-size: 12px; letter-spacing: 0.02em;
+}
+.hz-heading { margin: 0 0 40px; }
+.hz-heading h3 {
+  margin: 0 0 12px; font-family: var(--hz-display);
+  font-size: 22px; font-weight: 500; letter-spacing: 0.08em; text-transform: none;
+}
+.hz-rule {
+  display: block; width: 28px; height: 1px; background: var(--hz-ink); margin: 0 auto 16px;
+}
+.hz-heading p { margin: 0; color: var(--hz-muted); font-size: 13px; }
+.hz-colors {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: 14px; justify-items: center;
+}
+.hz-colors li {
+  display: flex; align-items: center; gap: 12px; font-size: 13px; letter-spacing: 0.04em;
+}
+.hz-swatch {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.12); flex-shrink: 0;
+}
+.hz-specs {
+  margin: 0 auto; max-width: 420px; text-align: left;
+}
+.hz-spec-row {
+  display: grid; grid-template-columns: 120px 1fr; gap: 12px;
+  padding: 10px 0; border-bottom: 1px solid var(--hz-line); font-size: 13px;
+}
+.hz-spec-row dt { color: var(--hz-muted); margin: 0; }
+.hz-spec-row dd { margin: 0; color: var(--hz-ink); }
+.hz-notice {
+  max-width: 520px; margin: 0 auto; padding: 24px 20px;
+  background: var(--hz-soft); text-align: left;
+}
+.hz-notice p { margin: 0; font-size: 12px; color: #5a5348; line-height: 1.8; }
+.hz-quote p {
+  font-family: var(--hz-display); font-size: 20px; font-style: italic;
+  color: var(--hz-accent); line-height: 1.6;
+}
+
+.hz-related {
+  max-width: 1100px; margin: 0 auto; padding: 48px 32px 80px;
+  border-top: 1px solid var(--hz-line);
+}
+.hz-related h3 {
+  margin: 0 0 28px; text-align: center; font-family: var(--hz-display);
+  font-size: 16px; letter-spacing: 0.2em; font-weight: 500;
+}
+
+@media (max-width: 860px) {
+  .hz-buy { grid-template-columns: 1fr; gap: 28px; padding: 32px 20px; }
+  .hz-detail { padding: 48px 16px 96px; }
+  .hz-block { margin-bottom: 56px; }
+  .hz-spec-row { grid-template-columns: 1fr; gap: 4px; }
+}
+
+.hz-cafe24 { background: transparent; }
+.hz-page { background: transparent; }
+</style>

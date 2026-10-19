@@ -1,0 +1,150 @@
+/* Paste into Cafe24 skin CSS or keep inline with generated fragment.
+   HEVITZ-inspired modular detail blocks — warm craft neutrals. */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Noto+Sans+KR:wght@300;400;500;600&display=swap');
+
+.hz-detail {
+  --hz-ink: #1a1814;
+  --hz-muted: #6e675c;
+  --hz-line: #ddd8d0;
+  --hz-soft: #f0ebe3;
+  --hz-accent: #3d3429;
+  --hz-display: "Cormorant Garamond", "Noto Serif KR", serif;
+  --hz-body: "Noto Sans KR", sans-serif;
+
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 72px 24px 120px;
+  text-align: center;
+  color: var(--hz-ink);
+  font-family: var(--hz-body);
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.75;
+}
+
+.hz-detail img {
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+  vertical-align: top;
+}
+
+.hz-block { margin: 0 0 72px; }
+
+.hz-intro-title {
+  margin: 0 0 20px;
+  font-family: var(--hz-display);
+  font-size: 34px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.hz-intro-body,
+.hz-text p,
+.hz-quote p {
+  margin: 0 auto;
+  max-width: 520px;
+  color: #3a342c;
+  font-size: 14px;
+  line-height: 1.95;
+}
+
+.hz-figure { margin: 0 auto 72px; }
+.hz-figure figcaption {
+  margin-top: 14px;
+  color: var(--hz-muted);
+  font-size: 12px;
+}
+
+.hz-heading h3 {
+  margin: 0 0 12px;
+  font-family: var(--hz-display);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+
+.hz-rule {
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: var(--hz-ink);
+  margin: 0 auto 16px;
+}
+
+.hz-heading p {
+  margin: 0;
+  color: var(--hz-muted);
+  font-size: 13px;
+}
+
+.hz-colors {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+  justify-items: center;
+}
+
+.hz-colors li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+
+.hz-swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.hz-specs {
+  margin: 0 auto;
+  max-width: 420px;
+  text-align: left;
+}
+
+.hz-spec-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--hz-line);
+  font-size: 13px;
+}
+
+.hz-spec-row dt { color: var(--hz-muted); margin: 0; }
+.hz-spec-row dd { margin: 0; }
+
+.hz-notice {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 24px 20px;
+  background: var(--hz-soft);
+  text-align: left;
+}
+
+.hz-notice p {
+  margin: 0;
+  font-size: 12px;
+  color: #5a5348;
+  line-height: 1.8;
+}
+
+.hz-quote p {
+  font-family: var(--hz-display);
+  font-size: 20px;
+  font-style: italic;
+  color: var(--hz-accent);
+}
+
+@media (max-width: 640px) {
+  .hz-detail { padding: 48px 16px 96px; }
+  .hz-intro-title { font-size: 26px; }
+  .hz-spec-row { grid-template-columns: 1fr; gap: 4px; }
+}

@@ -1,0 +1,195 @@
+<!-- HEVITZ-style modular detail | product: HZ-NCL-PO -->
+<div class="hz-detail hz-cafe24">
+
+        <section class="hz-block hz-intro" data-block="0">
+          <h2 class="hz-intro-title">복잡함 대신 몰입을,<br>과정보다 즐거움을.</h2>
+          <p class="hz-intro-body">바늘 두 개로 완성하는<br>프리미엄 퀄리티 가죽 DIY.</p>
+        </section>
+
+        <figure class="hz-block hz-figure" data-block="1">
+          <img src="https://images.unsplash.com/photo-1627123424574-724758594e93?w=1200&amp;q=80" alt="" loading="lazy">
+          
+        </figure>
+
+        <header class="hz-block hz-heading" data-block="2">
+          <h3>Kit</h3>
+          <span class="hz-rule" aria-hidden="true"></span>
+          
+        </header>
+
+        <section class="hz-block" data-block="3">
+          <dl class="hz-specs"><div class="hz-spec-row"><dt>Body A</dt><dd>1ea</dd></div><div class="hz-spec-row"><dt>Body B</dt><dd>1ea</dd></div><div class="hz-spec-row"><dt>Pocket A</dt><dd>2ea</dd></div><div class="hz-spec-row"><dt>Pocket B</dt><dd>2ea</dd></div><div class="hz-spec-row"><dt>바늘</dt><dd>2ea</dd></div><div class="hz-spec-row"><dt>실</dt><dd>2set</dd></div></dl>
+        </section>
+
+        <header class="hz-block hz-heading" data-block="4">
+          <h3>Size Info</h3>
+          <span class="hz-rule" aria-hidden="true"></span>
+          
+        </header>
+
+        <section class="hz-block" data-block="5">
+          <dl class="hz-specs"><div class="hz-spec-row"><dt>펼쳤을 때</dt><dd>약 16.3 × 11.2 cm</dd></div><div class="hz-spec-row"><dt>접었을 때</dt><dd>약 8 × 11.2 cm</dd></div></dl>
+        </section>
+
+        <aside class="hz-block hz-notice" data-block="6">
+          <p>일부 이미지는 연출을 위해 AI 기술을 활용하였습니다.</p>
+        </aside>
+</div>
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Noto+Sans+KR:wght@300;400;500;600&display=swap');
+
+:root {
+  --hz-bg: #faf9f7;
+  --hz-paper: #ffffff;
+  --hz-ink: #1a1814;
+  --hz-muted: #6e675c;
+  --hz-line: #ddd8d0;
+  --hz-soft: #f0ebe3;
+  --hz-accent: #3d3429;
+  --hz-content: 820px;
+  --hz-display: "Cormorant Garamond", "Noto Serif KR", serif;
+  --hz-body: "Noto Sans KR", sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  background: var(--hz-bg); color: var(--hz-ink);
+  font-family: var(--hz-body); font-size: 14px; font-weight: 300;
+  line-height: 1.75; -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; vertical-align: top; }
+a { color: inherit; }
+
+.hz-page { min-height: 100vh; }
+
+/* —— Buy module (Cafe24-like top) —— */
+.hz-buy {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 56px;
+  padding: 64px 32px 48px; background: var(--hz-paper);
+}
+.hz-gallery-main {
+  aspect-ratio: 1 / 1; background: var(--hz-soft); overflow: hidden;
+}
+.hz-gallery-main img { width: 100%; height: 100%; object-fit: cover; }
+.hz-thumbs { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.hz-thumb {
+  width: 60px; height: 60px; padding: 0; border: 1px solid transparent;
+  background: var(--hz-soft); overflow: hidden; cursor: pointer;
+}
+.hz-thumb.is-active { border-color: var(--hz-ink); }
+.hz-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+.hz-info { padding-top: 8px; }
+.hz-name {
+  margin: 0 0 6px; font-family: var(--hz-display);
+  font-size: 28px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.25;
+}
+.hz-name-en {
+  margin: 0 0 28px; color: var(--hz-muted); font-size: 13px; letter-spacing: 0.04em;
+}
+.hz-table { width: 100%; border-collapse: collapse; margin-bottom: 28px; }
+.hz-table th, .hz-table td {
+  border-bottom: 1px solid var(--hz-line); padding: 12px 0;
+  text-align: left; vertical-align: top; font-weight: 400; font-size: 13px;
+}
+.hz-table th {
+  width: 96px; color: var(--hz-muted); font-weight: 500; padding-right: 16px;
+}
+.hz-price { font-weight: 500; font-size: 15px; }
+.hz-opt { margin: 18px 0; }
+.hz-opt-label { font-size: 12px; font-weight: 500; margin-bottom: 10px; letter-spacing: 0.06em; }
+.hz-opt-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.hz-chip {
+  min-width: 36px; height: 36px; padding: 0 10px;
+  border: 1px solid var(--hz-line); background: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 12px; color: var(--hz-muted);
+}
+.hz-cta { display: grid; gap: 8px; margin-top: 28px; }
+.hz-cta button {
+  height: 48px; border: 1px solid var(--hz-ink);
+  font-family: var(--hz-body); font-size: 12px; font-weight: 500;
+  letter-spacing: 0.14em; cursor: pointer;
+}
+.hz-cta .buy { background: var(--hz-ink); color: #fff; }
+.hz-cta .cart, .hz-cta .wish { background: #fff; color: var(--hz-ink); }
+
+/* —— Editorial detail (inject into Cafe24 {$product_detail}) —— */
+.hz-detail {
+  max-width: var(--hz-content); margin: 0 auto;
+  padding: 72px 24px 120px; text-align: center;
+}
+.hz-block { margin: 0 0 72px; }
+.hz-intro-title {
+  margin: 0 0 20px; font-family: var(--hz-display);
+  font-size: clamp(26px, 4vw, 36px); font-weight: 500; line-height: 1.35;
+}
+.hz-intro-body, .hz-text p, .hz-quote p {
+  margin: 0 auto; max-width: 520px; color: #3a342c; font-size: 14px; line-height: 1.95;
+}
+.hz-figure { margin: 0 auto 72px; }
+.hz-figure img { width: 100%; margin: 0 auto; }
+.hz-figure figcaption {
+  margin-top: 14px; color: var(--hz-muted); font-size: 12px; letter-spacing: 0.02em;
+}
+.hz-heading { margin: 0 0 40px; }
+.hz-heading h3 {
+  margin: 0 0 12px; font-family: var(--hz-display);
+  font-size: 22px; font-weight: 500; letter-spacing: 0.08em; text-transform: none;
+}
+.hz-rule {
+  display: block; width: 28px; height: 1px; background: var(--hz-ink); margin: 0 auto 16px;
+}
+.hz-heading p { margin: 0; color: var(--hz-muted); font-size: 13px; }
+.hz-colors {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: 14px; justify-items: center;
+}
+.hz-colors li {
+  display: flex; align-items: center; gap: 12px; font-size: 13px; letter-spacing: 0.04em;
+}
+.hz-swatch {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.12); flex-shrink: 0;
+}
+.hz-specs {
+  margin: 0 auto; max-width: 420px; text-align: left;
+}
+.hz-spec-row {
+  display: grid; grid-template-columns: 120px 1fr; gap: 12px;
+  padding: 10px 0; border-bottom: 1px solid var(--hz-line); font-size: 13px;
+}
+.hz-spec-row dt { color: var(--hz-muted); margin: 0; }
+.hz-spec-row dd { margin: 0; color: var(--hz-ink); }
+.hz-notice {
+  max-width: 520px; margin: 0 auto; padding: 24px 20px;
+  background: var(--hz-soft); text-align: left;
+}
+.hz-notice p { margin: 0; font-size: 12px; color: #5a5348; line-height: 1.8; }
+.hz-quote p {
+  font-family: var(--hz-display); font-size: 20px; font-style: italic;
+  color: var(--hz-accent); line-height: 1.6;
+}
+
+.hz-related {
+  max-width: 1100px; margin: 0 auto; padding: 48px 32px 80px;
+  border-top: 1px solid var(--hz-line);
+}
+.hz-related h3 {
+  margin: 0 0 28px; text-align: center; font-family: var(--hz-display);
+  font-size: 16px; letter-spacing: 0.2em; font-weight: 500;
+}
+
+@media (max-width: 860px) {
+  .hz-buy { grid-template-columns: 1fr; gap: 28px; padding: 32px 20px; }
+  .hz-detail { padding: 48px 16px 96px; }
+  .hz-block { margin-bottom: 56px; }
+  .hz-spec-row { grid-template-columns: 1fr; gap: 4px; }
+}
+
+.hz-cafe24 { background: transparent; }
+.hz-page { background: transparent; }
+</style>
